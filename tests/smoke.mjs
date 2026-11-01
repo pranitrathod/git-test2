@@ -26,7 +26,7 @@ assert.match(html, /Remotive/);
 assert.match(html, /Arbeitnow/);
 assert.match(html, /Himalayas/);
 assert.match(html, /Jobicy/);
-assert.match(html, /https:\\/\\/jobicy\\.com\\//);
+assert.ok(html.includes("https://jobicy.com/"));
 assert.match(refreshScript, /https:\\/\\/jobicy\\.com\\/api\\/v2\\/remote-jobs/);
 assert.match(refreshScript, /function normalizeJobicy/);
 assert.match(refreshScript, /No usable jobs returned from the public sources/);
