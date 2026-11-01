@@ -25,6 +25,11 @@ assert.match(html, /data-action=\\?"cover-letter\\?"/);
 assert.match(html, /Remotive/);
 assert.match(html, /Arbeitnow/);
 assert.match(html, /Himalayas/);
+assert.match(html, /Jobicy/);
+assert.match(html, /https:\\/\\/jobicy\\.com\\//);
+assert.match(refreshScript, /https:\\/\\/jobicy\\.com\\/api\\/v2\\/remote-jobs/);
+assert.match(refreshScript, /function normalizeJobicy/);
+assert.match(refreshScript, /No usable jobs returned from the public sources/);
 assert.doesNotMatch(html, /Pranit Rathod|Jio Platforms Limited|Persistent Systems|pranit\.rathod@[\w.-]+/i);
 
 const inlineScripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
@@ -37,6 +42,7 @@ assert.equal(manifest.name.startsWith("JobPilot"), true);
 assert.equal(manifest.display, "standalone");
 assert.equal(manifest.start_url, "./");
 assert.equal(Array.isArray(jobsFeed.jobs), true);
+assert.match(readFileSync(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8"), /schedule:/);
 assert.match(refreshScript, /himalayas\.app\/jobs\/api\/search/);
 assert.match(worker, /addEventListener\("fetch"/);
 new Function(worker);
