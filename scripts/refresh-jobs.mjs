@@ -25,7 +25,7 @@ async function searchJobicy() {
   const url = new URL(JOBICY_BASE);
   url.searchParams.set("count", "100");
   url.searchParams.set("industry", "engineering");
-  url.searchParams.set("tag", "java");
+  
   const payload = await getJson(url);
   if (!Array.isArray(payload.jobs)) throw new Error("Unexpected Jobicy response: jobs[] missing");
   return payload.jobs;
@@ -101,6 +101,8 @@ function normalizeJobicy(job) {
   const title = job.jobTitle ?? job.title;
   const applicationLink = job.url ?? job.applicationLink;
   if (guid == null || !title || !applicationLink) return null;
+  const jobText = [title, job.jobExcerpt, job.jobDescription, job.jobLevel, ...(Array.isArray(job.jobIndustry) ? job.jobIndustry : [])].join(" ");
+  if (!/\\bjava\\b|spring\\s*boot|back.?end|software engineer|software developer|platform engineer|full.?stack|devops/i.test(jobText)) return null;
 
   return {
     guid: "jobicy-" + String(guid),
