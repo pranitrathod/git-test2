@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "app.webmanifest"
+      - "icon.svg"
+      - "service-worker.js"
+      - "tests/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -18,7 +22,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Validate JobPilot
+        run: node tests/smoke.mjs
+
   deploy:
+    needs: test
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
