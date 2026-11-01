@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 
-const HIMALAYAS_BASE = "https://himalayas.app/jobs/api/search";
+const HIMALAYAS_BASE = "https://himalayas.app/jobs/api";
 const JOBICY_BASE = "https://jobicy.com/api/v2/remote-jobs";
 
 async function getJson(url) {
@@ -12,31 +12,30 @@ async function getJson(url) {
   return response.json();
 }
 
-async function searchHimalayas(params) {
+async function browseHimalayas(offset) {
   const url = new URL(HIMALAYAS_BASE);
-  for (const [key, value] of Object.entries({ ...params, sort: "recent", page: "1" })) {
-    url.searchParams.set(key, String(value));
-  }
+  url.searchParams.set("limit", "20");
+  url.searchParams.set("offset", String(offset));
   const payload = await getJson(url);
   if (!Array.isArray(payload.jobs)) throw new Error("Unexpected Himalayas response: jobs[] missing");
   return payload.jobs;
 }
 
-async function searchJobicy(params) {
+async function searchJobicy() {
   const url = new URL(JOBICY_BASE);
-  for (const [key, value] of Object.entries(params)) url.searchParams.set(key, String(value));
+  url.searchParams.set("count", "100");
+  url.searchParams.set("industry", "engineering");
+  url.searchParams.set("tag", "java");
   const payload = await getJson(url);
   if (!Array.isArray(payload.jobs)) throw new Error("Unexpected Jobicy response: jobs[] missing");
   return payload.jobs;
 }
 
 const queries = [
-  { source: "Himalayas", run: () => searchHimalayas({ q: "Java", country: "IN" }) },
-  { source: "Himalayas", run: () => searchHimalayas({ q: "Spring Boot", country: "IN" }) },
-  { source: "Himalayas", run: () => searchHimalayas({ q: "Backend", country: "IN" }) },
-  { source: "Himalayas", run: () => searchHimalayas({ q: "Java", worldwide: "true" }) },
-  { source: "Himalayas", run: () => searchHimalayas({ q: "Backend", worldwide: "true" }) },
-  { source: "Jobicy", run: () => searchJobicy({ count: 100, industry: "engineering", tag: "java" }) },
+  { source: "Himalayas", run: () => browseHimalayas(0) },
+  { source: "Himalayas", run: () => browseHimalayas(20) },
+  { source: "Himalayas", run: () => browseHimalayas(40) },
+  { source: "Jobicy", run: searchJobicy },
 ];
 
 const settled = await Promise.allSettled(queries.map(query => query.run()));
@@ -66,6 +65,12 @@ function normalizeHimalayas(job) {
   const applicationLink = job.applicationLink ?? job.applyUrl ?? job.url;
   if (guid == null || !title || !applicationLink) return null;
 
+  const categories = Array.isArray(job.categories) ? job.categories : (Array.isArray(job.category) ? job.category : []);
+  const parents = Array.isArray(job.parentCategories) ? job.parentCategories : [];
+  const description = job.description || job.excerpt || "";
+  const searchable = [title, job.excerpt, description, ...categories, ...parents].join(" ");
+  if (!/\bjava\b|spring\s*boot|back.?end|software engineer|software developer|platform engineer|full.?stack|devops/i.test(searchable)) return null;
+
   return {
     guid: String(guid),
     source: "Himalayas",
@@ -83,8 +88,8 @@ function normalizeHimalayas(job) {
       ? job.locationRestrictions.map(location => ({ name: location.name || "", alpha2: location.alpha2 || "" }))
       : [],
     timezoneRestrictions: Array.isArray(job.timezoneRestrictions) ? job.timezoneRestrictions : [],
-    categories: Array.isArray(job.categories) ? job.categories : [],
-    description: job.description || job.excerpt || "",
+    categories: [...categories, ...parents],
+    description,
     pubDate: job.pubDate ?? null,
     expiryDate: job.expiryDate ?? null,
     applicationLink,
@@ -138,7 +143,7 @@ const jobs = [...byGuid.values()].sort((a, b) => {
 
 if (jobs.length === 0) {
   throw new Error(
-    "No usable jobs returned from the public sources. The previous published feed will remain in place. " +
+    "No usable Java/backend jobs returned from the public sources. The previous published feed will remain in place. " +
     failures.join(" | ")
   );
 }
