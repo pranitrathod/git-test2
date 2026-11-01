@@ -1,9 +1,7 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-11-01T10:06:41.982Z",
   "source": "Himalayas",
-  "queryCount": 0,
-  "failedQueries": [
-    "The scheduled refresh has not run yet."
-  ],
+  "queryCount": 5,
+  "failedQueries": [],
   "jobs": []
 }
