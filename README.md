@@ -13,7 +13,7 @@ The deployment workflow runs a syntax/smoke-test gate, refreshes the public job 
 ## Features
 
 - Live job discovery from Remotive and Arbeitnow when the user presses Search.
-- Daily cached remote-engineering discovery from Himalayas and Jobicy, refreshed by the deployment workflow.
+- Daily cached remote-engineering discovery from Jobicy, refreshed by the deployment workflow; Himalayas listings are included when matching roles appear in its newest pages.
 - Explainable keyword-based matching against the editable profile and skill list.
 - Job filters for keyword, location, work arrangement, freshness and match score.
 - Saved and hidden jobs, application pipeline, notes and follow-up dates.
