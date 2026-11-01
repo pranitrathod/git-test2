@@ -43,7 +43,7 @@ assert.equal(manifest.display, "standalone");
 assert.equal(manifest.start_url, "./");
 assert.equal(Array.isArray(jobsFeed.jobs), true);
 assert.match(readFileSync(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8"), /schedule:/);
-assert.match(refreshScript, /himalayas\.app\/jobs\/api\/search/);
+assert.ok(refreshScript.includes("https://himalayas.app/jobs/api"));
 assert.match(worker, /addEventListener\("fetch"/);
 new Function(worker);
 
