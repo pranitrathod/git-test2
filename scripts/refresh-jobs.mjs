@@ -36,10 +36,7 @@ const queries = [
   { source: "Himalayas", run: () => searchHimalayas({ q: "Backend", country: "IN" }) },
   { source: "Himalayas", run: () => searchHimalayas({ q: "Java", worldwide: "true" }) },
   { source: "Himalayas", run: () => searchHimalayas({ q: "Backend", worldwide: "true" }) },
-  { source: "Jobicy", run: () => searchJobicy({ count: 100, industry: "engineering", geo: "apac", tag: "java" }) },
-  { source: "Jobicy", run: () => searchJobicy({ count: 100, industry: "engineering", geo: "apac", tag: "spring boot" }) },
   { source: "Jobicy", run: () => searchJobicy({ count: 100, industry: "engineering", tag: "java" }) },
-  { source: "Jobicy", run: () => searchJobicy({ count: 100, industry: "engineering", tag: "backend" }) },
 ];
 
 const settled = await Promise.allSettled(queries.map(query => query.run()));
