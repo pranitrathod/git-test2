@@ -27,7 +27,7 @@ assert.match(html, /Arbeitnow/);
 assert.match(html, /Himalayas/);
 assert.match(html, /Jobicy/);
 assert.ok(html.includes("https://jobicy.com/"));
-assert.match(refreshScript, /https:\\/\\/jobicy\\.com\\/api\\/v2\\/remote-jobs/);
+assert.ok(refreshScript.includes("https://jobicy.com/api/v2/remote-jobs"));
 assert.match(refreshScript, /function normalizeJobicy/);
 assert.match(refreshScript, /No usable jobs returned from the public sources/);
 assert.doesNotMatch(html, /Pranit Rathod|Jio Platforms Limited|Persistent Systems|pranit\.rathod@[\w.-]+/i);
