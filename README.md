@@ -1,34 +1,46 @@
 # JobPilot — Personal Career Workspace
 
-A single-user, browser-based job-search workspace for one owner.
+A single-user, browser-based career workspace. No account, signup or subscription is required.
 
-## Open the app
+## Hosting
 
-Once GitHub Pages is enabled and the deployment workflow succeeds, the app will be available at:
+After GitHub Pages is enabled with **Settings → Pages → Build and deployment → Source: GitHub Actions**, the site will be available at:
 
 https://pranitrathod.github.io/git-test2/
 
-## What it does
+The deployment workflow runs a syntax/smoke-test gate, refreshes the public job cache, then publishes the static site. A scheduled refresh is configured once per day (00:20 UTC).
 
-- Fetches real listings from Remotive and Arbeitnow public job APIs when you press Search.
-- Scores jobs against an editable local profile and skill list using a transparent keyword heuristic.
-- Saves jobs, tracks application stages, and generates recruiter outreach drafts.
-- Supports local PDF/DOCX resume text extraction in the browser.
-- Exports and imports a JSON backup of your personal workspace.
+## Features
 
-## Privacy
+- Live job discovery from Remotive and Arbeitnow when the user presses Search.
+- Daily cached remote-engineering discovery from Himalayas and Jobicy, refreshed by the deployment workflow.
+- Explainable keyword-based matching against the editable profile and skill list.
+- Job filters for keyword, location, work arrangement, freshness and match score.
+- Saved and hidden jobs, application pipeline, notes and follow-up dates.
+- Job-specific cover-letter and recruiter outreach drafts.
+- PDF/DOCX text extraction in the browser.
+- PWA install support and an offline application shell.
+- JSON export/import backups.
 
-No login or server-side profile is used. Profile details, extracted resume text, saved jobs, applications, and drafts are stored in the browser's local storage. They are not committed to this repository or sent to the job APIs. Local browser storage is not encrypted; do not use a shared computer. Export a backup before clearing browser data.
+## Privacy and data storage
 
-## Important limitations
+No login or server-side candidate profile is used. Candidate profile details, extracted resume text, saved/hidden jobs, application history, notes and drafts stay in the browser's local storage. They are not included in the repository, public job cache or API requests.
 
-- Search runs only when you open the app and press Refresh. It does not run in the background when the browser is closed.
-- Job match scores are heuristic estimates, not ATS scores or hiring decisions.
-- Application submission and recruiter email sending are manual. Never mark an application as submitted unless you have actually submitted it.
-- Always confirm current job availability, eligibility, location and requirements on the original listing.
-- Remotive listings may be delayed by 24 hours; the app shows the Remotive source and links to the original listing. Remotive advises no more than four API requests per day.
+Browser local storage is not encrypted. Anyone with access to the same browser profile can view its data. Use a trusted personal device and export a private backup regularly. Do not use a shared/public computer.
 
-## Sources
+## Honest limitations
 
-- Remotive: https://remotive.com/api/remote-jobs
-- Arbeitnow: https://www.arbeitnow.com/api/job-board-api?page=1
+- Public job feeds are not a complete index of all vacancies. Himalayas and Jobicy focus on remote listings; Arbeitnow has a strong Europe focus. The user must confirm eligibility and current status at the original listing.
+- Match scores are transparent keyword heuristics, not ATS scores, an employer's decision or a guarantee of eligibility.
+- Job refresh is manual for the live browser sources; the two cached sources update through a daily hosted workflow. This app does not search in the background continuously.
+- Job application submission and recruiter email sending are not automated. Application portals remain manual; a status is only marked Submitted when the user confirms it.
+- Do not bypass CAPTCHA, login barriers or anti-bot protections; do not guess answers to mandatory questions.
+- Remotive listings are delayed by 24 hours and its public API advises no more than four calls per day. Jobicy's public API contains recent remote listings; source attribution and original listing links are retained.
+- Local browser data is not synced across devices. Export a backup before clearing site data or changing browser profiles.
+
+## Public sources and API terms
+
+- Remotive: https://remotive.com/remote-jobs/api
+- Arbeitnow: https://www.arbeitnow.com/api/job-board-api
+- Himalayas: https://himalayas.app/docs/remote-jobs-api
+- Jobicy: https://jobicy.com/jobs-rss-feed
