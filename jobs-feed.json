@@ -1,0 +1,9 @@
+{
+  "generatedAt": null,
+  "source": "Himalayas",
+  "queryCount": 0,
+  "failedQueries": [
+    "The scheduled refresh has not run yet."
+  ],
+  "jobs": []
+}
