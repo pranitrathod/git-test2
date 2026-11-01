@@ -1,6 +1,6 @@
 # JobPilot — Personal Career Workspace
 
-A single-user, browser-based job-search workspace built for Pranit Rathod.
+A single-user, browser-based job-search workspace for one owner.
 
 ## Open the app
 
